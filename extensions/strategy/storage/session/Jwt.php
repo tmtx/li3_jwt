@@ -15,7 +15,7 @@ class Jwt extends \lithium\core\Object {
 	 *
 	 * @var array
 	 */
-	public $_classes = ['jwt' => '\JWT'];
+	protected $_classes = ['jwt' => '\JWT'];
 
 	/**
 	 * Default configuration.
@@ -46,14 +46,14 @@ class Jwt extends \lithium\core\Object {
 	public function read($token, array $options = []) {
 		$jwt = $this->_classes['jwt'];
 
-		$token = $jwt::decode($token, $this->_config['secret'], [$this->_config['algorithm']]);
-		$token = (array) $token;
+		$payload = $jwt::decode($token, $this->_config['secret'], [$this->_config['algorithm']]);
+		$payload = (array) $payload;
 		$key = isset($options['key']) ? $options['key'] : null;
 
 		if ($key) {
-			return isset($token[$key]) ? $token[$key] : null;
+			return isset($payload[$key]) ? $payload[$key] : null;
 		}
-		return $token;
+		return $payload;
 	}
 
 	/**
@@ -66,10 +66,10 @@ class Jwt extends \lithium\core\Object {
 	public function write($data, array $options = []) {
 		$jwt = $this->_classes['jwt'];
 
-		$futureData = $this->read(null, ['key' => null] + $options) ?: [];
-		$futureData = [$options['key'] => $data] + $futureData;
+		$payload = $this->read(null, ['key' => null] + $options) ?: [];
+		$payload = [$options['key'] => $data] + $payload;
 
-		return empty($futureData) ? null : $jwt::encode($futureData, $this->_config['secret']);
+		return empty($payload) ? null : $jwt::encode($payload, $this->_config['secret']);
 	}
 
 }
