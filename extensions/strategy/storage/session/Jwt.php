@@ -44,9 +44,7 @@ class Jwt extends \lithium\core\Object {
 	 * @return mixed Returns the decoded key or the dataset.
 	 */
 	public function read($token, array $options = []) {
-		$jwt = $this->_classes['jwt'];
-
-		$payload = $jwt::decode($token, $this->_config['secret'], [$this->_config['algorithm']]);
+		$payload = $this->_decode($token);
 		$payload = (array) $payload;
 		$key = isset($options['key']) ? $options['key'] : null;
 
@@ -62,12 +60,34 @@ class Jwt extends \lithium\core\Object {
 	 * @return string Returns the json web token.
 	 */
 	public function write($data, array $options = []) {
-		$jwt = $this->_classes['jwt'];
-
 		$payload = $this->read(null, ['key' => null] + $options) ?: [];
 		$payload = [$options['key'] => $data] + $payload;
 
-		return empty($payload) ? null : $jwt::encode($payload, $this->_config['secret']);
+		return empty($payload) ? null : $this->_encode($payload);
+	}
+
+	/**
+	 * Encode a data array.
+	 *
+	 * @param array $data The data to be encoded.
+	 * @return string Returns the json web token.
+	 */
+	protected function _encode($data = []) {
+		$jwt = $this->_classes['jwt'];
+
+		return $jwt::encode($data, $this->_config['secret']);
+	}
+
+	/**
+	 * Decode a json web token.
+	 *
+	 * @param string $token The json web token to decode.
+	 * @return array Returns the json web token payload.
+	 */
+	protected function _decode($token) {
+		$jwt = $this->_classes['jwt'];
+
+		return $jwt::decode($token, $this->_config['secret'], [$this->_config['algorithm']]);
 	}
 
 }
