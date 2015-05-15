@@ -50,9 +50,7 @@ class Jwt extends \lithium\core\Object {
 		$payload = (array) $payload;
 		$key = isset($options['key']) ? $options['key'] : null;
 
-		if ($key) {
-			return isset($payload[$key]) ? $payload[$key] : null;
-		}
+		if ($key) return isset($payload[$key]) ? $payload[$key] : null;
 		return $payload;
 	}
 
