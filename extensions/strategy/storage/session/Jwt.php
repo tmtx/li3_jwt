@@ -60,10 +60,13 @@ class Jwt extends \lithium\core\Object {
 	 * @return string Returns the json web token.
 	 */
 	public function write($data, array $options = []) {
+		$class = $options['class'];
+
 		$payload = $this->read(null, ['key' => null] + $options) ?: [];
 		$payload = [$options['key'] => $data] + $payload;
+		$class::key($options['name'], $this->_encode($payload));
 
-		return empty($payload) ? null : $this->_encode($payload);
+		return $payload;
 	}
 
 	/**
