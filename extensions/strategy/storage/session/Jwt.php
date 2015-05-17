@@ -39,13 +39,15 @@ class Jwt extends \lithium\core\Object {
 	/**
 	 * Read method.
 	 *
-	 * @param array $token The json web token to decode and read.
+	 * @param array $data the Data being read.
 	 * @param array $options Options for this method.
 	 * @return mixed Returns the decoded key or the dataset.
 	 */
-	public function read($token, array $options = []) {
-		$payload = $this->_decode($token);
-		$payload = (array) $payload;
+	public function read($data, array $options = []) {
+		$class = $options['class'];
+
+		$token = $class::read(null, ['strategies' => false]);
+		$payload = $token ? (array) $this->_decode($token) : [];
 		$key = isset($options['key']) ? $options['key'] : null;
 
 		if ($key) return isset($payload[$key]) ? $payload[$key] : null;
