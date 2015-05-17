@@ -10,9 +10,7 @@
 ### Composer
 
 ```
-
 composer require jasonroyle/li3_jwt
-
 ```
 
 ## Enable the Libraries
@@ -20,7 +18,6 @@ composer require jasonroyle/li3_jwt
 Make the application aware of the libraries by adding the following to `app/config/bootstrap/libraries.php`.
 
 ```php
-
 /**
  * Add some plugins:
  */
@@ -30,7 +27,6 @@ Libraries::add('li3_jwt');
  * Load composer libraries
  */
 require_once(dirname(LITHIUM_APP_PATH) . '/vendor/autoload.php');
-
 ```
 
 ## Configuration
@@ -38,7 +34,6 @@ require_once(dirname(LITHIUM_APP_PATH) . '/vendor/autoload.php');
 Add the following configuration to `app/config/bootstrap/session.php` replacing `***SECRET***` with your secret string.
 
 ```php
-
 use lithium\storage\Session;
 
 Session::config(['default' => [
@@ -49,5 +44,4 @@ Session::config(['default' => [
 		'secret' => '***SECRET***'
 	]]
 ]]);
-
 ```
