@@ -75,7 +75,7 @@ class Jwt extends \lithium\core\Object {
 	protected function _encode($data = []) {
 		$jwt = $this->_classes['jwt'];
 
-		return $jwt::encode($data, $this->_config['secret']);
+		return $jwt::encode($data, $this->_config['secret'], $this->_config['algorithm']);
 	}
 
 	/**
