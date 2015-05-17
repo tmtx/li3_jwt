@@ -153,9 +153,9 @@ class Token extends \lithium\core\Object {
 			if (!isset($payload[$key])) return true;
 
 			unset($payload[$key]);
-			$self::clear();
+			$self::clear($params);
 			foreach ($payload as $key => $value) {
-				$self::write($key, $value);
+				$self::write($key, $value, $params);
 			}
 			return true;
 		};
