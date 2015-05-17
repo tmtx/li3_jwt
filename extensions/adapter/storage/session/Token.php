@@ -2,6 +2,8 @@
 
 namespace li3_jwt\extensions\adapter\storage\session;
 
+use lithium\core\ConfigException;
+
 /**
  * A minimal adapter to interface with token sessions.
  *
@@ -16,10 +18,7 @@ class Token extends \lithium\core\Object {
 	 *
 	 * @var array
 	 */
-	protected $_defaults = [
-		'header' => 'Authorization',
-		'prefix' => 'Bearer '
-	];
+	protected $_defaults = ['prefix' => ''];
 
 	/**
 	 * Stores the token.
@@ -35,6 +34,9 @@ class Token extends \lithium\core\Object {
 	 * @return void
 	 */
 	public function __construct(array $config = []) {
+		if (!isset($config['header'])) {
+			throw new ConfigException('Token adapter requires a header.');
+		}
 		parent::__construct($config + $this->_defaults);
 	}
 
