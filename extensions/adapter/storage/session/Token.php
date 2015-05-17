@@ -26,7 +26,7 @@ class Token extends \lithium\core\Object {
 	 *
 	 * @var null|string
 	 */
-	public static $token = null;
+	public static $_token = null;
 
 	/**
 	 * Constructor.
@@ -65,9 +65,19 @@ class Token extends \lithium\core\Object {
 			if ($prefixPosition || $prefixPosition === false) {
 				$token = $prefix . $token;
 			}
-			static::$token = $token;
+			static::$_token = $token;
 		}
-		return static::$token;
+		return static::$_token;
+	}
+
+	/**
+	 * Ends the session by unsetting the token.
+	 *
+	 * @return boolean `true` if the token is successfully unset, `false` otherwise.
+	 */
+	public static function end() {
+		static::$_token = null;
+		return !isset(static::$_token);
 	}
 
 	/**
@@ -76,7 +86,7 @@ class Token extends \lithium\core\Object {
 	 * @return boolean `true` if the token is set, `false` otherwise.
 	 */
 	public static function isStarted() {
-		return !!static::$token;
+		return !!static::$_token;
 	}
 
 	/**
@@ -162,8 +172,7 @@ class Token extends \lithium\core\Object {
 		$tokenClass = __CLASS__;
 
 		return function($self, $params) use (&$config, $tokenClass) {
-			$tokenClass::$token = null;
-			return !!$tokenClass::$token;
+			return $tokenClass::end();
 		};
 	}
 
