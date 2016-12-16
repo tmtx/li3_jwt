@@ -1,5 +1,5 @@
 {
-    "name": "jasonroyle/li3_jwt",
+    "name": "vbresults/li3_jwt",
     "description": "JSON Web Token Session Adapter for Lithium",
     "type": "lithium-library",
     "license": "MIT",
@@ -9,7 +9,6 @@
             "email": "jasonroyle@me.com"
         }
     ],
-    "minimum-stability": "stable",
     "require": {
         "php": ">=5.5.14",
         "composer/installers": "~1.0",
