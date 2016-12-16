@@ -101,7 +101,7 @@ class Token extends \lithium\core\Object {
 		$config = $this->_config;
 		$payload = $this->read();
 
-		return function($self, $params) use (&$config, $payload) {
+		return function($params) use (&$config, $payload) {
 			return isset($payload[$params['key']]);
 		};
 	}
@@ -118,7 +118,7 @@ class Token extends \lithium\core\Object {
 		$config = $this->_config;
 		$token = $this->key();
 
-		return function($self, $params) use (&$config, $token) {
+		return function($params) use (&$config, $token) {
 			$token = str_replace($config['prefix'], '', $token);
 			return $token;
 		};
@@ -133,7 +133,7 @@ class Token extends \lithium\core\Object {
 	 * @return Closure Function returning boolean `true` on successful write, `false` otherwise.
 	 */
 	public function write($key, $value = null, array $options = []) {
-		return function($self, $params) {
+		return function($params) {
 			return true;
 		};
 	}
@@ -148,16 +148,16 @@ class Token extends \lithium\core\Object {
 	public function delete($key, array $options = []) {
 		$config = $this->_config;
 
-		return function($self, $params) use (&$config) {
+		return function($params) use (&$config) {
 			$key = $params['key'];
-			$payload = $self::read();
+			$payload = $this::read();
 
 			if (!isset($payload[$key])) return true;
 
 			unset($payload[$key]);
-			$self::clear($params);
+			$this::clear($params);
 			foreach ($payload as $key => $value) {
-				$self::write($key, $value, $params);
+				$this::write($key, $value, $params);
 			}
 			return true;
 		};
@@ -173,7 +173,7 @@ class Token extends \lithium\core\Object {
 		$config = $this->_config;
 		$tokenClass = __CLASS__;
 
-		return function($self, $params) use (&$config, $tokenClass) {
+		return function($params) use (&$config, $tokenClass) {
 			return $tokenClass::end();
 		};
 	}
