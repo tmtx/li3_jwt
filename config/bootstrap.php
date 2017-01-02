@@ -7,19 +7,22 @@ use lithium\storage\Session;
 /**
  * Set the token header in the response.
  */
-Filters::apply(Dispatcher::class, 'run', function($params, $next) {
+Filters::apply(Dispatcher::class, "run", function($params, $next) {
 	$response = $next($params);
 	$configs = Session::config();
 
 	foreach ($configs as $name => $config) {
 		if ($config['adapter'] == 'Token') {
-			$header = $config['header'];
+			$token = Session::key($name);
+			$position = strpos($token, $config['prefix']);
+
+			if ($position || $position === false) {
+				$token = $config['prefix'] . $token;
+			}
+
+			$response->headers($config['header'], $token);
 			break;
 		}
-	}
-
-	if (isset($header)) {
-		$response->headers($header, Session::key($name));
 	}
 
 	return $response;

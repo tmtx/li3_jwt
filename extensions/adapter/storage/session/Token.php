@@ -62,13 +62,9 @@ class Token extends \lithium\core\Object {
 	 */
 	public function key($token = null) {
 		if (isset($token)) {
-			$prefix = $this->_config['prefix'];
-			$prefixPosition = strpos($token, $prefix);
-			if ($prefixPosition || $prefixPosition === false) {
-				$token = $prefix . $token;
-			}
 			static::$_token = $token;
 		}
+
 		return static::$_token;
 	}
 
