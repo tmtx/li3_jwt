@@ -9,20 +9,24 @@ use lithium\storage\Session;
  */
 Filters::apply(Dispatcher::class, "run", function($params, $next) {
 	$response = $next($params);
-	$configs = Session::config();
 
-	foreach ($configs as $name => $config) {
-		if ($config['adapter'] == 'Token') {
-			$token = Session::key($name);
-			$position = strpos($token, $config['prefix']);
+	try {
+		$configs = Session::config();
 
-			if ($position || $position === false) {
-				$token = $config['prefix'] . $token;
+		foreach ($configs as $name => $config) {
+			if ($config['adapter'] == 'Token') {
+				$token = Session::key($name);
+				$position = strpos($token, $config['prefix']);
+
+				if ($position || $position === false) {
+					$token = $config['prefix'] . $token;
+				}
+
+				$response->headers($config['header'], $token);
+				break;
 			}
-
-			$response->headers($config['header'], $token);
-			break;
 		}
+	} catch (\Throwable $throwable) {
 	}
 
 	return $response;

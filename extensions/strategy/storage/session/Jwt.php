@@ -79,7 +79,6 @@ class Jwt extends \lithium\core\Object {
 	 */
 	protected function _encode($data = []) {
 		$jwt = $this->_classes['jwt'];
-
 		return $jwt::encode($data, $this->_config['secret'], $this->_config['algorithm']);
 	}
 
@@ -87,12 +86,20 @@ class Jwt extends \lithium\core\Object {
 	 * Decode a json web token.
 	 *
 	 * @param string $token The json web token to decode.
-	 * @return array Returns the json web token payload.
+	 * @return array|false Returns the json web token payload, or false if there was an error.
 	 */
-	protected function _decode($token) {
+	protected function _decode($token)
+	{
 		$jwt = $this->_classes['jwt'];
 
-		return $jwt::decode($token, $this->_config['secret'], [$this->_config['algorithm']]);
-	}
+		try {
+			return $jwt::decode($token, $this->_config['secret'], [$this->_config['algorithm']]);
+		} catch (\Throwable $error) {
+			if (getenv("DEBUG")) {
+				error_log($error->getMessage(), 0);
+			}
 
+			return false;
+		}
+	}
 }
