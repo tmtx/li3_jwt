@@ -1,5 +1,5 @@
 {
-    "name": "vbresults/li3_jwt",
+    "name": "jasonroyle/li3_jwt",
     "description": "JSON Web Token Session Adapter for Lithium",
     "type": "lithium-library",
     "license": "MIT",
